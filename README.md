@@ -13,7 +13,7 @@
                             reloadOnChange: true);
     });
 
-    // 添加Oeclot
+    // 添加Ocelot
     builder.Services.AddOcelot()
                     .AddConsul();
 
@@ -162,9 +162,54 @@
         }
       }
     }
+## 2、Docker安装Consul
+>   转载自：[https://www.cnblogs.com/summerday152/p/14013439.html](https://www.cnblogs.com/summerday152/p/14013439.html)
+### 2.1 拉取Consul镜像
+    $ docker pull consul # 默认拉取latest
+    $ docker pull consul:1.6.1 # 拉取指定版本
+### 2.2 安装并运行
+    docker run -d -p 8500:8500 --restart=always --name=consul consul:latest agent -server -bootstrap -ui -node=1 -client='0.0.0.0'
+> * agent: 表示启动 Agent 进程。
+> * server：表示启动 Consul Server 模式
+> * client：表示启动 Consul Cilent 模式。
+> * bootstrap：表示这个节点是 Server-Leader ，每个数据中心只能运行一台服务器。技术角度上讲 Leader 是通过 Raft 算法选举的，但是集群第一次启动时需要一个引导 Leader，在引导群集后，建议不要使用此标志。
+> * ui：表示启动 Web UI 管理器，默认开放端口 8500，所以上面使用 Docker 命令把 8500 端口对外开放。
+> * node：节点的名称，集群中必须是唯一的，默认是该节点的主机名。
+> * client：consul服务侦听地址，这个地址提供HTTP、DNS、RPC等服务，默认是127.0.0.1所以不对外提供服务，如果你要对外提供服务改成0.0.0.0
+> * join：表示加入到某一个集群中去。 如：-json=192.168.0.11。
+### 2.3 关闭防火墙或开放8500端口
+#### *【查看防火墙是否开启】*
+    $ systemctl status firewalld
+#### *【开启或关闭防火墙】*
+    $ systemctl start firewalld
+    $ systemctl stop firewalld
+#### *【查看所有开启的端口】*
+    $ firewall-cmd --list-ports
+#### *【开启80端口】*
+    $ firewall-cmd --zone=public --add-port=2181/tcp --permanent
+#### *【重启防火墙，使其生效】*
+    $ firewall-cmd --reload
 
+### *如果是阿里云服务器，需要设置安全组：*
+>  来到实例管理页面，点击更多，点击网络和安全组，点击安全组配置。
+> 
+>  ![图片1](https://img2020.cnblogs.com/blog/1771072/202011/1771072-20201120190901910-220933991.png)
+> 
+>  点击配置规则。
+> 
+>  ![图片2](https://img2020.cnblogs.com/blog/1771072/202011/1771072-20201120190907504-621983589.png)
+> 
+>  点击添加安全组规则，端口范围改为8500。
+> 
+>  ![图片3](https://img2020.cnblogs.com/blog/1771072/202011/1771072-20201120190912827-800573654.png)
 
-
-
-
+### 2.4 测试访问
+> 
+>    ![图片4](./Services_Consul.png)
+>  1.  services：放置服务
+>  2.  nodes：放置consul节点
+>  3.  key/value：放置一些配置信息
+>  4.  dc1：配置数据中心
+> 
+>  * 官方文档： [https://www.consul.io/docs](https://www.consul.io/docs)
 
