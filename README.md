@@ -3,12 +3,12 @@
 
 # 一、 .net6 core 微服务搭建笔记
 
-## 1、添加Oeclot
+## 1、添加Ocelot
 #### ***Program.cs***
     // 添加配置文件
     builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
     {
-        config.AddJsonFile("oeclot.json",
+        config.AddJsonFile("ocelot.json",
                             optional: true,
                             reloadOnChange: true);
     });
@@ -19,7 +19,7 @@
 
     // 添加Ocelot
     app.UseOcelot();
-#### ***oeclot.json***
+#### ***ocelot.json***
     //********************************************单地址全匹配*****************************************************
     {
       "Routes": [
