@@ -205,7 +205,7 @@
 
 ### 2.4 测试访问
 > 
->    ![图片4](./Services_Consul.png)
+>    ![图片4](https://cdn.jsdelivr.net/gh/SetSailYu/MyGallery/img/202201182103687.png)
 >  1.  services：放置服务
 >  2.  nodes：放置consul节点
 >  3.  key/value：放置一些配置信息
