@@ -3,6 +3,8 @@
 
 # 一、 .net6 core 微服务搭建笔记
 
+#### ***docker安装.net6镜像***
+    docker pull mcr.microsoft.com/dotnet/aspnet:6.0
 ## 1、添加Ocelot
 #### ***Program.cs***
     // 添加配置文件
